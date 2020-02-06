@@ -61,11 +61,13 @@ for i in range(79):
     Hubei[4,i+1]=Hubei[4,i]+k*Hubei[2,i]
 Hubei=Hubei.astype(np.int)
 Hubei[:,:]+=Wuhan[:,:]
-print(Hubei)
 
-#fig_Hubei = plt.figure()
-#plt.plot(range(len(Wuhan_data.Confirmed)), Wuhan_data.Confirmed, '-')
-#plt.plot(range(len(Wuhan_data.Confirmed)), Wuhan[2,45:66], '--')
-#plt.show()
+file='Hubei_Data.csv'
+Hubei_data=pd.read_csv(file,error_bad_lines=False) #1.20-2.4
+
+fig_Hubei = plt.figure()
+plt.plot(range(len(Hubei_data.Confirmed)), Hubei_data.Confirmed, '-')
+plt.plot(range(len(Hubei_data.Confirmed)), Hubei[2,50:66], '--')
+plt.show()
 
 

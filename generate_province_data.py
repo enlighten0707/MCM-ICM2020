@@ -5,11 +5,16 @@ Created on Tue Feb  4 19:54:47 2020
 @author: 86150
 """
 
+
+#Dict: P,I,D,R
+#Col: Time Series. Dec 1st,2019  --> Feb 18th,2020
+
 import pandas as pd
+import numpy as np
 
 time_stamp={}
 
-Date_List=['0122','0123','0124','0125','0126','0127','0128','0129','0130','0131','0201','0202','0203']
+Date_List=['0122','0123','0124','0125','0126','0127','0128','0129','0130','0131','0201','0202','0203','0204']
 
 
 for i,date in enumerate(Date_List):
@@ -24,6 +29,10 @@ for i,date in enumerate(Date_List):
                 time_stamp[place].append(0)
         time_stamp[place].append(data.confirmed_cases[j])
     
-pd.DataFrame(time_stamp).to_csv('Province_Data.csv')
-tmp=pd.DataFrame(time_stamp)
-print(tmp)
+time_stamp.pop('CHINA TOTAL')
+Province=np.array(list(time_stamp))
+Confirmed=np.array(list(time_stamp.values()))
+
+data=pd.read_csv('Province_Basic_Data.csv',error_bad_lines=False)
+Population=np.array(data.Population)
+FlowRatio=np.array(data.FlowRatio)
