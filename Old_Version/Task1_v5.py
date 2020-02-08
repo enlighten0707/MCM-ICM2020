@@ -197,6 +197,7 @@ for j in range(34):
         plt.legend(loc = 'best')
         tit='Prediction for Infected in '+prov.Province[j]
         plt.title(tit)
+        
 #        print(prov.Confirmed[j])
 #        print(Place[:,52:66])
         plt.show()

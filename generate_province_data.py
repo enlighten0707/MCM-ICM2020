@@ -29,10 +29,11 @@ for i,date in enumerate(Date_List):
                 time_stamp[place].append(0)
         time_stamp[place].append(data.confirmed_cases[j])
     
-time_stamp.pop('CHINA TOTAL')
+China_Total=time_stamp.pop('CHINA TOTAL')
 Province=np.array(list(time_stamp))
 Confirmed=np.array(list(time_stamp.values()))
 
 data=pd.read_csv('Province_Basic_Data.csv',error_bad_lines=False)
 Population=np.array(data.Population)
-FlowRatio=np.array(data.FlowRatio)
+FlowRatio=np.array(data.FlowRatio,dtype=np.float32)
+#print(FlowRatio)
