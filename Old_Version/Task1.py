@@ -43,8 +43,8 @@ for i in range(79):
 Wuhan=Wuhan.astype(np.int)
 
 fig_Wuhan = plt.figure()
-plt.plot(range(len(Wuhan_data.Confirmed)), Wuhan_data.Confirmed, '-')
-plt.plot(range(len(Wuhan_data.Confirmed)), Wuhan[2,45:66], '--')
+plt.plot(range(len(Wuhan_data.Confirmed)), Wuhan_data.Confirmed, 'o-')
+plt.plot(range(len(Wuhan_data.Confirmed)), Wuhan[2,45:66], 'o-')
 plt.show()
 
 p=59000000-P
@@ -66,8 +66,8 @@ file='Hubei_Data.csv'
 Hubei_data=pd.read_csv(file,error_bad_lines=False) #1.20-2.4
 
 fig_Hubei = plt.figure()
-plt.plot(range(len(Hubei_data.Confirmed)), Hubei_data.Confirmed, '-')
-plt.plot(range(len(Hubei_data.Confirmed)), Hubei[2,50:66], '--')
+plt.plot(range(len(Hubei_data.Confirmed)), Hubei_data.Confirmed, 'o-')
+plt.plot(range(len(Hubei_data.Confirmed)), Hubei[2,50:66], 'o-')
 plt.show()
 
 

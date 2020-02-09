@@ -10,15 +10,15 @@ import pandas as pd
 import numpy as np
 import random
 import matplotlib.pyplot as plt
-#import generate_province_data as prov
-#import Prediction_China_No_Holiday as No_Holiday
+import generate_province_data as prov
+import Prediction_China_No_Holiday as No_Holiday
 plt.style.use('seaborn-whitegrid')
 Date_List=['0115','0116','0117','0118','0119','0120','0121','0122','0123','0124','0125','0126','0127','0128','0129','0130','0131','0201','0202','0203','0204']
 
 ncolors = len(plt.rcParams['axes.prop_cycle'])
 plt.rcParams['font.sans-serif'] = 'Consolas'
 plt.rcParams['axes.unicode_minus'] = True
-plt.rcParams['savefig.dpi'] = 2000
+plt.rcParams['savefig.dpi'] = 600
 #plt.style.use('ggplot')
 
 fig = plt.figure(41)
@@ -41,14 +41,14 @@ for New_Med_Day in range(72,103,5):
     b=0.6
     
     # Data For Wuhan
-    file='Wuhan_Data.csv'
+    file='./Data/Wuhan_Data.csv'
     Wuhan_data=pd.read_csv(file,error_bad_lines=False) #1.15-2.4
     #Row: 0--S, 1--E, 2--I, 3--R, 4--D 
     #Total_person=P=1400w, P=S+E+I+R+D
     #Col: Time Series. Dec 1st,2019  -->Feb 18th,2020(X)
     
     # description about population flow, travel restriction considered 
-    data=pd.read_csv('Flow_Rate_Data.csv',error_bad_lines=False)
+    data=pd.read_csv('./Data/Flow_Rate_Data.csv',error_bad_lines=False)
     Flow_rate=data.Flow_rate
     Wuhan=np.zeros([5,120],dtype=np.float32)
     Wuhan[: , 0]=[P, 0., 1., 0., 0.]
@@ -74,7 +74,7 @@ for New_Med_Day in range(72,103,5):
         elif i <= New_Med_Day:
             r+=0.005
         else:
-            r=0.05
+            r+=0.01
         
             
         k=0.035*r
@@ -146,7 +146,7 @@ for New_Med_Day in range(72,103,5):
         elif i <= New_Med_Day:
             r+=0.005
         else:
-            r=0.05
+            r+=0.01
             
         k=0.035*r
         Hubei[1,i+1]=Hubei[1,i]+ h*Hubei[0,i]- thita*Hubei[1,i]+ alpha*m*Wuhan[1,i]*Flow_rate[i]
@@ -157,7 +157,7 @@ for New_Med_Day in range(72,103,5):
     Hubei[:,:]+=Wuhan[:,:]
     #StackProvince['Hubei']=Hubei[2,52:83]
     
-    file='Hubei_Data.csv'
+    file='./Data/Hubei_Data.csv'
     Hubei_data=pd.read_csv(file,error_bad_lines=False) #1.20-2.4
     
 #    Date_List_tmp=['1.20','1.23','1.26','1.29','2.1','2.4']
@@ -244,7 +244,7 @@ for New_Med_Day in range(72,103,5):
             elif i <= New_Med_Day:
                 r+=0.005
             else:
-                r=0.05
+                r+=0.01
             
             k=0.035*r
             
@@ -267,6 +267,6 @@ for New_Med_Day in range(72,103,5):
     plt.xlabel('Date')
     plt.ylabel('Confirmed Cases')
     plt.legend(loc = 'best',fontsize=8)
-    plt.title('Prediction for Infected in China\n(New Medicine Invented)')
+    plt.title('Prediction for Infected in China')
 
 plt.savefig('./figure/Prediction_New_Medicine.png')

@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import generate_province_data as prov
 plt.style.use('seaborn-whitegrid')
 
-StackProvince={}
+#StackProvince={}
 Date_List=['0115','0116','0117','0118','0119','0120','0121','0122','0123','0124','0125','0126','0127','0128','0129','0130','0131','0201','0202','0203','0204']
 #parameter
 m=1
@@ -23,7 +23,7 @@ b=0.6
 
 
 # Data For Wuhan
-file='Wuhan_Data.csv'
+file='./Data/Wuhan_Data.csv'
 Wuhan_data=pd.read_csv(file,error_bad_lines=False) #1.15-2.4
 
 data=pd.read_csv('./Data/Flow_Rate_Data_No_Geo_Restriction.csv',error_bad_lines=False)
@@ -40,8 +40,8 @@ for i in range(119):
         h *= 0.08                    # ??? But this is necessary (Maybe we can consider linear decrease since day 67 and then level off)
     elif i >= 67:
         h *= 0.36                    # Most exposers show symptoms and get isolated (Two week after restriction)
-    elif i >= 53:
-        h *= 0.6                    # Travelling restriction
+#    elif i >= 53:
+#        h *= 0.6                    # Travelling restriction
     elif i >= 31:
         h *= 0.98                   # Notice publicated
         
@@ -109,8 +109,8 @@ for i in range(119):
         h *= 0.08                    # ??? But this is necessary (Maybe we can consider linear decrease since day 67 and then level off)
     elif i >= 67:
         h *= 0.36                    # Most exposers show symptoms and get isolated (Two week after restriction)
-    elif i >= 53:
-        h *= 0.6                    # Travelling restriction
+#    elif i >= 53:
+#        h *= 0.6                    # Travelling restriction
     elif i >= 31:
         h *= 0.98                   # Notice publicated
         
@@ -130,7 +130,7 @@ Hubei=Hubei.astype(np.int)
 Hubei[:,:]+=Wuhan[:,:]
 #StackProvince['Hubei']=Hubei[2,52:83]
 
-file='Hubei_Data.csv'
+file='./Data/Hubei_Data.csv'
 Hubei_data=pd.read_csv(file,error_bad_lines=False) #1.20-2.4
 
 Date_List_tmp=['1.20','1.23','1.26','1.29','2.1','2.4']
@@ -155,14 +155,13 @@ China_Total_Pre=np.zeros([5,120],dtype=np.float32)
 China_Total_Pre=Hubei
 ShowProvince=['Beijing','Shanghai','Guangdong','Zhejiang','Henan','Hunan','Jiangxi','Anhui']
 # Adjust the pupolation flow
-Little_High_Province=['Hunan','Guangxi','Jilin','Liaoning','Shanghai']
-High_Province=['Jilin','Tibet','Xinjiang','Sichuan','Liaoning','Shaanxi','Tianjin','Shanxi','Gansu','Qinghai','Hebei','Yunnan','Hainan','Guizhou','Inner Mongolia','Fujian']
-Far_High_Province=['Jilin','Tibet','Sichuan','Liaoning','Shaanxi','Hainan','Qinghai','Inner Mongolia','Gansu','Shanxi','Yunnan']
-Low_Province=['Ningxia','Zhejiang','Shandong','Jiangsu','Guangdong','Henan','Chongqing','Fujian']
-Far_Low_Province=['Shandong','Jiangsu','Guangdong','Chongqing']
+High_Province=['Gansu','Qinghai','Hainan','Shanghai','Yunnan','Tianjin']
+Far_High_Province=['Shanghai']
+Low_Province=['Sichuan','Jiangxi','Guangdong','Xinjiang','Hunan','Beijing','Anhui','Shandong','Liaoning','Guangxi','Chongqing','Jiangsu','Hebei','Zhejiang','Heilongjiang','Sichuan','Jiangxi','Fujian']
+Far_Low_Province=['Sichuan','Jiangxi','Guangdong','Xinjiang','Zhejiang','Fujian','Liaoning','Anhui']
 for j in range(34):
     Province=prov.Province[j]
-    if(prov.Province[j]=='Hubei' or prov.Province[j]=='Hong Kong' or prov.Province[j]=='Macau' or prov.Province[j]=='Taiwan'):
+    if(prov.Province[j]=='Hubei' or prov.Province[j]=='Hong Kong' or prov.Province[j]=='Macau' or prov.Province[j]=='Taiwan' or prov.Province[j]=='Tibet'):
         continue
     p    =prov.Population[j] * 10000
     alpha=prov.FlowRatio[j]/100
@@ -170,23 +169,25 @@ for j in range(34):
         alpha=0.85/100.
     if Province=='Hunan':
         alpha=3.52/100.
-        
-    if Province=='Tibet':
-        alpha/=10
+#        
+#    if Province=='Tibet':
+#        alpha/=10
     if Province in High_Province:
         alpha/=3
     if Province in Far_High_Province:
-        alpha/=2
-    if Province in Little_High_Province:
         alpha/=2
     if Province in Low_Province:
         alpha*=3
     if Province in Far_Low_Province:
         alpha*=2
-    if Province=='Anhui':
-        alpha*=1.2
-    if Province =='Henan' or Province =='Guangdong' :
+    if Province =='Guangdong':
+        alpha*=11
+    if Province == 'Zhejiang':
         alpha*=5
+    if Province == 'Liaoning' or Province =='Jiangxi'or Province =='Fujian' or Province=='Jiangxi' or Province=='Shaanxi':
+        alpha*=2
+    if Province == 'Shanghai':
+        alpha/=5    
     m=1
     n=1
     thita=0.14
@@ -199,14 +200,14 @@ for j in range(34):
         if i >= 67 and i <= 80:
             b -= 0.04   
         
-        h=b*Place[2,i]/p
+        h=0.75 * b *Place[2,i]/p
         
         if i >= 80:
             h *= 0.08                    # ??? But this is necessary (Maybe we can consider linear decrease since day 67 and then level off)
         elif i >= 67:
             h *= 0.36                    # Most exposers show symptoms and get isolated (Two week after restriction)
-        elif i >= 53:
-            h *= 0.6                    # Travelling restriction
+#        elif i >= 53:
+#            h *= 0.6                    # Travelling restriction
         elif i >= 31:
             h *= 0.98                   # Notice publicated
             
@@ -241,11 +242,11 @@ for j in range(34):
 #    else:
 #        plt.savefig('./figure/Beijing_Validation.png',dpi=1000)
     
-    if Province in ShowProvince:
-        StackProvince[Province]=Place[2,52:93]#1.22->3.1
+#    if Province in ShowProvince:
+#        StackProvince[Province]=Place[2,52:93]#1.22->3.1
 
 
-pd.DataFrame(StackProvince).to_csv('./Data/Stack_Province_No_Geo_Restriction.csv')
+#pd.DataFrame(StackProvince).to_csv('./Data/Stack_Province_No_Geo_Restriction.csv')
 #print(StackProvince)
 #1.22->2.4
 

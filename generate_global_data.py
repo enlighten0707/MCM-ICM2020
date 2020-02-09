@@ -21,7 +21,7 @@ time_stamp={}
 Date_List=['0124','0125','0126','0127','0128','0129','0130','0131','0201','0202','0203']
 
 for i,date in enumerate(Date_List):
-    file='./Global_Data/'+date+'.csv'
+    file='.Data/Global_Data/'+date+'.csv'
     data=pd.read_csv(file,sep='|',error_bad_lines=False)
     data.drop(['deaths','notes','sources'],axis=1,inplace=True)
     

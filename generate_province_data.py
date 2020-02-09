@@ -18,7 +18,7 @@ Date_List=['0122','0123','0124','0125','0126','0127','0128','0129','0130','0131'
 
 
 for i,date in enumerate(Date_List):
-    file='./Province_Data/'+date+'.csv'
+    file='./Data/Province_Data/'+date+'.csv'
     data=pd.read_csv(file,sep='|',error_bad_lines=False)
     data.drop(['deaths','notes','sources'],axis=1,inplace=True)
     
@@ -33,7 +33,7 @@ China_Total=time_stamp.pop('CHINA TOTAL')
 Province=np.array(list(time_stamp))
 Confirmed=np.array(list(time_stamp.values()))
 
-data=pd.read_csv('Province_Basic_Data.csv',error_bad_lines=False)
+data=pd.read_csv('./Data/Province_Basic_Data.csv',error_bad_lines=False)
 Population=np.array(data.Population)
 FlowRatio=np.array(data.FlowRatio,dtype=np.float32)
 print(China_Total)
