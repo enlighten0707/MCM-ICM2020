@@ -9,6 +9,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.style.use('seaborn-whitegrid')
+plt.rcParams['font.sans-serif'] = 'Consolas'
+plt.rcParams['axes.unicode_minus'] = True
+plt.rcParams['savefig.dpi'] = 600
+
+
+
 time_stamp={}
 
 Date_List=['0124','0125','0126','0127','0128','0129','0130','0131','0201','0202','0203']
@@ -62,11 +69,18 @@ plt.savefig('./figure/Global_Total.png',dpi=300)
 Global_Pos=['Australia','Germany','Japan','Singapore','South Korea','Thailand']
 
 fig= plt.figure(2)
-for country in Global_Pos:
-    plt.plot(range(11), time_stamp[country], 'o-',label=country)
-    plt.xticks(range(11),Date_List_tmp)
-    plt.legend(loc = 'best')
-    plt.xlabel('Date')
-    plt.ylabel('Confirmed Cases')
-plt.title('Major Confirmed Cases Outside China')
-plt.savefig('./figure/Global_Partial.png',dpi=300)
+Date_List=['1.24','1.26','1.28','1.30','2.1','2.3']
+#colors = ['#ff9999','#9999ff','#cc1234','#1E8449','#3498DB','#34495E','#6C3483','#283747']
+colors = ['#cc1234','#9999ff','#6C3483','#1E8449','#3498DB','#34495E']
+plt.stackplot(range(11), time_stamp['Australia'],time_stamp['Germany'],time_stamp['Japan'],time_stamp['Singapore'],time_stamp['South Korea'],time_stamp['Thailand'],colors=colors,alpha=0.9)
+
+for i in range(len(colors)):
+	plt.plot([],[],color=colors[i],label=Global_Pos[i],linewidth=5)
+
+plt.legend(loc='upper left')
+plt.title('Confirmed Cases in Several Countries')
+plt.ylabel('Confirmed Cases')
+plt.xlabel('Date')
+plt.xlim((0,10))
+plt.xticks(range(0,11,2),Date_List)
+plt.savefig('./figure/Global_Partial.png')
